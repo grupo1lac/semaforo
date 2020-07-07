@@ -335,8 +335,8 @@ Desenvolvimento
 \end_layout
 
 \begin_layout Standard
-Nesta parte do relatório iremos explicar em detalhe as fases já apresentadas
- do nosso projeto.
+Nesta parte do relatório iremos explicar em detalhe as fases do nosso projeto
+ sumariadas anteriormente.
 \end_layout
 
 \begin_layout Subsection*
@@ -753,6 +753,140 @@ Em relação aos alphas em falta acho que sinceramente deixo contigo.
 
 \end_layout
 
+\begin_layout Subsection*
+\begin_inset Formula $\boldsymbol{\alpha}$
+\end_inset
+
+-0.5
+\end_layout
+
+\begin_layout Standard
+Decidimos que o projeto estava numa fase suficientemente avançada para implement
+armos um simulação automática.
+ Mais pormenorizadamente, essa automatização consistiria em assumir uma
+ determinada evolução temporal do rácio de entrada, em que o pormenor mais
+ importante dessa evolução seria a existência de dois claros máximos ao
+ longo dia: às 8h e às 17h.
+ Como esse fenómeno ocorre com muita consistência, decidimos que uma evolução
+ determinista que consiste numa combinação linear de duas distribuições
+ de Cauchy com os seus máximos nos anteriormente referidos.
+ Como a velocidade instantânea dos veículos é claramente um fenómeno mais
+ aleatório, decidimos gerar a cada instante um valor aleatório da mesma,
+ seguindo também uma distribuição de Cauchy.
+ Contudo, não faria muito sentido que o valor médio da distribuição fosse
+ uma constante, já que é pouco provável que este seja o mesmo em situações
+ de alto ou baixo tráfego.
+ Deste modo, fizemos com que o valor médio fosse uma função do rácio de
+ entrada, mais especificamente uma sigmóide.
+ Esta função é frequentemente utilizadada como função de ativação de redes
+ neuronais.
+\end_layout
+
+\begin_layout Standard
+Segue-se uma breve descrição das funções:
+\end_layout
+
+\begin_layout Standard
+• “genspeed”: função que gera velocidades instantâneas.
+ Recorremos ao módulo random do pacote NumPy, ao método da inversão da função
+ cumulativa da distribuição de probabilidade, e ao facto de que a distribuição
+ que escolhemos tem uma primitiva facilmente determinável.
+\end_layout
+
+\begin_layout Standard
+• “cauchy”: retorna o valor da distribuição de probabilidade para um dado
+ valor da variável aleatória, do valor médio e do desvio padrão.
+\end_layout
+
+\begin_layout Standard
+• “gettime”: usa o tempo real e converte-o num tempo virtual, sendo que
+ estes diferem apenas de um fator multiplicativo.
+\end_layout
+
+\begin_layout Standard
+• “ratio”: função que retorna os rácios de entrada dada a altura do dia.
+\end_layout
+
+\begin_layout Subsection*
+\begin_inset Formula $\boldsymbol{\alpha}$
+\end_inset
+
+-0.6
+\end_layout
+
+\begin_layout Standard
+Percebmos que chamar uma instância do interpretador de python para cada
+ um dos valores que queríamos calcular causava problemas de ecidimos juntar
+ todas as funções num só script e fazer mais uma função, que recebe como
+ argumento todos variáveis consideradas num certo instante, chama as restantes
+ funções e retorna todos os resultados noutro array, que é diretamente passado
+ para o LabView.
+ Desta
+\end_layout
+
+\begin_layout Standard
+• “get”: recebe o array com os parâmetros controlados no Front Panel, nomeadamen
+te o fator de conversão entre os tempos e os valores instantâneos dos rácios
+ de entrada, chama as restantes funções e organiza todos os valores num
+ array de output que será recebido pela VI.
+\end_layout
+
+\begin_layout Standard
+O código que diz respeito a todas estas funções está presente na seguinte
+ Figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:node"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename node.png
+	lyxscale 10
+	width 10cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:node"
+
+\end_inset
+
+Script de Python.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
 Avaliação de desempenho
 \end_layout
@@ -763,6 +897,20 @@ Avaliação de desempenho
 
 \begin_layout Section
 Implementação real - refleções
+\end_layout
+
+\begin_layout Standard
+Se pensarmos no controlador em si como software, a sua implementação na
+ vida real seria em princípio bastante fácil.
+ Contudo, o LabView, como se pode entender pelo nome, foi feito para utilização
+ com um Display Manager, e apenas para Windows e MacOS.
+ A melhor implementação dos controladores seria a utilização do software
+ num dispositivo muito acessível e económicos como o Arduino ou o Raspberry
+ Pi, que foram feitos para desempenhar um número limitado de processos,
+ como seria o caso do nosso controlador.
+ Assim, era apenas uma questão de converter o nosso algoritmo para uma linguagem
+ mais apropriada como Python, C ou C++.
+ A
 \end_layout
 
 \begin_layout Standard
