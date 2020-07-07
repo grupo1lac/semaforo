@@ -10,7 +10,7 @@
 \end_preamble
 \use_default_options true
 \maintain_unincluded_children false
-\language english
+\language portuguese
 \language_package default
 \inputencoding utf8
 \fontencoding global
@@ -71,7 +71,7 @@
 \paragraph_indentation default
 \is_math_indent 0
 \math_numbering_side default
-\quotes_style english
+\quotes_style french
 \dynamic_quotes 0
 \papercolumns 1
 \papersides 1
@@ -112,7 +112,21 @@ Introdução
 \end_layout
 
 \begin_layout Standard
-(...)
+Neste relatório está documentado o processo de criação de um controlador
+ de semáforos.
+ Para isso, utilizamos o LabView como ferramenta principal, também utilizando
+ um pouco de Python na automatização.
+\end_layout
+
+\begin_layout Standard
+Foi feita a escolha de um local real da cidade do Porto, a respetiva simulação,
+ e o desenvolvimento de um algoritmo que, dadas certas informações sobre
+ o estado do tráfego em tempo real, decide a configuração de cada um dos
+ semáforos que a ela melhor se adequa.
+ A aplicação real destes controladores teria como consequência uma melhor
+ gestão global do tráfego, nomeadamente a diminuição da duração dos congestionam
+entos diários que ocorrem a certas horas em várias zonas de grandes cidades
+ como o Porto.
 \end_layout
 
 \begin_layout Section
@@ -120,12 +134,77 @@ Especificações iniciais
 \end_layout
 
 \begin_layout Standard
-(...)
-\begin_inset Note Note
+Em primeiro lugar, começamos por discutir que situação iríamos estudar,
+ com foco em situações reais do área metropolitana do Porto.
+ Começamos por pensar na interceção da Rua Júlio Dínis com a Praça de Mouzinho
+ de Albuquerque pois apresenta uma interação interessante entre o semáforo
+ dos peões e os semáforos de entrada e saída da rotunda.
+ No entanto, decidimos optar por um cruzamento pois abria possibilidades
+ para novas interações.
+ O cruzamento em questão é o cruzamento entre a Rua Latino Coelho e a Rua
+ Alegria (Figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:earth"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+Escolhemos o LabView para a implementação do controlador, já que nos dá
+ a capacidade de intervir manualmente durante a execução do código, podendo
+ assim simular facilmente bastantes estados do tráfego logo na fase inicial
+ do desenvolvimento, muito antes de precisarmos realmente de automatizar
+ esse processo.
+ Desta maneira, será prática a avaliação contínua da performance do controlador.
+\end_layout
+
+\begin_layout Standard
+Por outro lado, o pacote de interação com um interpretador de Python que
+ o LabView tem é um bom apoio na eventualidade de precisarmos de implementar
+ algo mais complexo como as funções que farão parte da automatização da
+ simulação do controlador.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
 status open
 
 \begin_layout Plain Layout
-A incluir: Revisão de tecnologias possível; Seleção de hardware/software;
+\align center
+\begin_inset Graphics
+	filename earth.png
+	lyxscale 10
+	width 15cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:earth"
+
+\end_inset
+
+Cruzamento entre a Rua da Alegria e a Rua Latino Coelho, Porto.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -138,11 +217,126 @@ Planeamento
 \end_layout
 
 \begin_layout Standard
-(...)
+Para este projeto, implementamos um processo de evolução natural de trabalho.
+ Isto é, começamos com um programa simples (
+\begin_inset Formula $\alpha$
+\end_inset
+
+_0.1) e fomos inserindo novas características e funcionalidades.
+ Apresentamos agora um breve resumo das várias fases do programa.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\alpha$
+\end_inset
+
+_0.1: Sistema com semáforo principal e semáforo para peões perfeitamente
+ sincronizados.
+ Apresenta um botão de emergência que, caso esteja ativo, o semáforo para
+ peões é desativado e o semáforo principal fica em amarelo intermitente.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\alpha$
+\end_inset
+
+_0.2: Reforma à primeira versão do programa.
+ Apresenta as mesmas características do 
+\begin_inset Formula $\alpha$
+\end_inset
+
+_0.1, porém, de forma mais compacta, assim, quando fossemos estudar sistemas
+ mais complexos teríamos uma maneira simples de fazer semáforos usando uma
+ subVI de 
+\begin_inset Formula $\alpha$
+\end_inset
+
+_0.2.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\alpha$
+\end_inset
+
+_0.3: Com o insucesso de 
+\begin_inset Formula $\alpha$
+\end_inset
+
+_0.2, fazemos a nossa segunda reforma.
+ Processo utiliza uma ideia semelhante à versão 0.2 mas agora fizemos um
+ semáforo à volta de ''case structures''.
+ Apresenta dois semáforos principais, conectados como se fossem dois semáforos
+ de um cruzamento, e os respetivos semáforos para peões.
+ Apresenta também um mecanismo de acionameto antecipado por controlo de
+ velocidade dos veículos e um mecanismo que, caso haja bastante tráfego
+ na via, o semáforo utiliza essa informação de forma a haver uma desiguldade
+ ''positiva''
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+Com desigualdade ''positiva'' queremos dizer que o semáforo vai estar mais
+ tempo no verde
+\begin_inset Formula $+$
+\end_inset
+
+amarelo do que no vermelho
+\end_layout
+
+\end_inset
+
+ entre o tempo em que está em vermelho e o tempo em que está no verde 
+\begin_inset Formula $+$
+\end_inset
+
+ amarelo, e assim diminuir naturalmente o tráfego.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\alpha$
+\end_inset
+
+_0.4: Automatização da simulação através de um script de python com funções
+ que descrevem os rácios de entrada ao longo do tempo e outras que com base
+ nos valores destes rácios geram amostras estocásticas da velocidade instânea
+ dos carros.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\alpha$
+\end_inset
+
+_0.5: Otimização da execução do código Python através da utilização de apenas
+ um script que toma como argumento um array todos os valores necessários
+ e retorna os pretendidos também num array, em oposição a ter um script
+ por valor pretendido.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\alpha$
+\end_inset
+
+_0.6: 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Toques finais?? Não consigo perceber pelo vi que diferenças há entre o 5,
+ 6, e 7 xD
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
 Desenvolvimento
+\end_layout
+
+\begin_layout Standard
+Nesta parte do relatório iremos explicar em detalhe as fases já apresentadas
+ do nosso projeto.
 \end_layout
 
 \begin_layout Subsection*
@@ -150,6 +344,55 @@ Desenvolvimento
 \end_inset
 
 -0.1
+\end_layout
+
+\begin_layout Standard
+Em primeiro lugar, criamos o semáforo principal, para isso utilizamos booleanos
+ do tipo botão, alterando a cor para o respetivo elemento do semáforo e
+ fizemos uma flat sequence onde por cada frame apenas uma luz estava ligada.
+ Depois criamos mais dois botões referentes ao semáforo para peões e alteramos
+ a sua condição consoante o estado em que o semáforo principal estava (se
+ o semáforo estava vermelho o semáforo para peões ficava verde, (se o semáforo
+ estava verde o semáforo para peões ficava vermelho).
+ Por fim criamos uma case structure que, caso o botão de emergência estivesse
+ ativo corria um ciclo while em que a luz amarela ligava e desligava e caso
+ estivesse desligado corria o nosso programa anteriormente escrito.
+ Por fim, introduzimos um timer que apresenta ao peão quanto tempo falta
+ para o seu semáforo ficar vermelho.
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename a01block.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset Formula $\alpha$
+\end_inset
+
+_0.1
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection*
@@ -242,8 +485,267 @@ Insert -> Label
 
 \end_layout
 
-\begin_layout Plain Layout
+\end_inset
 
+
+\end_layout
+
+\begin_layout Subsection*
+\begin_inset Formula $\boldsymbol{\alpha}$
+\end_inset
+
+-0.3
+\end_layout
+
+\begin_layout Standard
+A ideia inicial era a implementação de um ''state'' que está associado ao
+ semáforo, isto é:
+\end_layout
+
+\begin_layout Itemize
+Se o semáforo está no estado 0, ele está vermelho e passa para o estado
+ 1 quando se tiver passado no mínimo
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+este ''no mínimo'' é interessante e será discutido mais à frente
+\end_layout
+
+\end_inset
+
+ um tempo 
+\begin_inset Formula $t=timer$
+\end_inset
+
+.
+\begin_inset Foot
+status open
+
+\begin_layout Plain Layout
+timer é um input do nosso sistema de forma a definir o tempo que o semáforo
+ fica no verde
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Se o semáforo esá no estado 1 ele começa verde e, passado um tempo 
+\begin_inset Formula $t=timer$
+\end_inset
+
+, muda para amarelo, onde permanece um tempo 
+\begin_inset Formula $t=\frac{timer}{2}$
+\end_inset
+
+, por fim, muda para o estado 0.
+\end_layout
+
+\begin_layout Standard
+Aplicando isto a um semáforo simples o que acontece é exatamente o esperado,
+ e apenas tivemos de usar um case structure para definir os estados e uma
+ flat sequence para fazer o semáforo ficar verde e depois amarelo.
+\end_layout
+
+\begin_layout Standard
+Agora, decidimos emparelhar outro semáforo.
+ Para isso, estudamos um cruzamento simples entre duas vias de sentido único.
+ Neste exemplo, tudo está em sincronia:
+\end_layout
+
+\begin_layout Itemize
+Quando um semáforo está a permitir passagem (estado 1), o outro não permite
+ (estado 0).
+\end_layout
+
+\begin_layout Itemize
+Quando um semáforo está a permitir passagem (estado 1), o seu semáforo de
+ peões associado não permite.
+\end_layout
+
+\begin_layout Standard
+Para implementar esta ideia fizemos com que os estados dos semáforos estivessem
+ conectados.
+ Isto é, o semáforo 1 está num estado X, então o semáforo 2 está no outro
+ estado.
+\end_layout
+
+\begin_layout Standard
+Mas, com esta teoria deparamo-nos com um problema conceptual.
+ Um semáforo fica no estado 0 um tempo 
+\begin_inset Formula $t=timer$
+\end_inset
+
+ e fica no estado 1 um tempo 
+\begin_inset Formula $t=1.5timer$
+\end_inset
+
+ (
+\begin_inset Formula $1.0$
+\end_inset
+
+ no verde e 
+\begin_inset Formula $0.5$
+\end_inset
+
+ no amarelo).
+ Se os semáforos estão perfeitamente conectados quanto tempo irá o semáforo
+ estar no vermelho? A resposta é 
+\begin_inset Formula $1.5timer$
+\end_inset
+
+ o que é o esperado, porque o estado só muda quando tudo o que tiver de
+ acontecer naquela iteração do 
+\emph on
+for 
+\emph default
+(que é o nosso 
+\emph on
+for
+\emph default
+ temporal) terminar, ou seja, 
+\begin_inset Formula $1.5timer$
+\end_inset
+
+ depois.
+\end_layout
+
+\begin_layout Standard
+Para finalizar, adicionamos duas novas ferramentas:
+\end_layout
+
+\begin_layout Itemize
+Um mecanismo que, caso haja um carro a mais de 
+\begin_inset Formula $50Km/h$
+\end_inset
+
+, o amarelo é acionado antecipadamente.
+ No entanto, o semáforo fica no verde no mínimo um tempo 
+\begin_inset Formula $t=\frac{timer}{2}$
+\end_inset
+
+.
+ Este tempo foi introduzido para quando o semáforo fica verde não mudar
+ imediatamente para amarelo, havendo sempre um delay justificado.
+\end_layout
+
+\begin_layout Itemize
+Um mecanismo que, caso haja um enorme tráfego de carros, o semáforo permaneça
+ menos tempo no vermelho de forma a haver um melhor fluído de tráfego.
+\end_layout
+
+\begin_layout Standard
+Estes dois mecanismos estão ligados pois, no fundo, acionar um aviso de
+ congestionamento na via 1 é o equivalente a ligar o mecanismo de velocidade
+ na via 2, pois, se na via 2 está menos tempo no verde, por consequência,
+ na via 1 está menos tempo no vermelho.
+\end_layout
+
+\begin_layout Standard
+Adicionamos uns sliders para representarem o tráfego nas vias e fizemos
+ com que o seu valor diminuísse quando está verde e amarelo e aumentasse
+ quando está vermelho.
+ Adicionamos também um input ''rácio de entrada'' que, se saem Y carros
+ enquanto está verde, entram ''rácio de entrada'' 
+\begin_inset Formula $\times$
+\end_inset
+
+Y carros enquanto está vermelho.
+ Assim, podemos associar este valor, por exemplo, à altura do dia.
+ Se, na hora de ponta entram 
+\begin_inset Formula $5\times$
+\end_inset
+
+ mais carros do que saem, à noite entram 
+\begin_inset Formula $\frac{1}{10}\times$
+\end_inset
+
+ dos carros que saem até que não há trânsito de todo.
+\end_layout
+
+\begin_layout Subsection*
+\begin_inset Formula $\boldsymbol{\alpha}$
+\end_inset
+
+-0.4
+\end_layout
+
+\begin_layout Standard
+Nesta implementação decidimos estudar o caso escolhido, ou seja, o cruzamento
+ da rua Latino Coelho e da rua da Alegria.
+ Para isso, remodelamos o 
+\begin_inset Formula $\alpha$
+\end_inset
+
+_0.3 de forma a queria uma melhor visualização do cruzamento no Front Panel
+ do LabView.
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename a04front.png
+	scale 50
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+Front Panel do 
+\begin_inset Formula $\alpha$
+\end_inset
+
+_0.4 com o esquema do cruzamento entre a rua Latino Coelho e a rua da Alegria;
+ o botão retangular está ativo quando a velocidade na via é 
+\begin_inset Formula $\geq50km/h$
+\end_inset
+
+; o botão quadrado está ativo quando há congestionamento na via (Valor no
+ Slider 
+\begin_inset Formula $\geq8$
+\end_inset
+
+)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Acho que a parte do desenvolvimento dos alphas em que trabalhei estão +/-
+ eheh
+\end_layout
+
+\begin_layout Plain Layout
+Fica à vontade para alterar qualqueeer coisa que te apeteça, confio totalmente
+ no teu sentido crítico e tenho a certeza que consegues melhorar algo que
+ eu tenha feito menos bem.
+\end_layout
+
+\begin_layout Plain Layout
+Em relação aos alphas em falta acho que sinceramente deixo contigo.
 \end_layout
 
 \end_inset

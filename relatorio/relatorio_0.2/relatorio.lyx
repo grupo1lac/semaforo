@@ -112,34 +112,21 @@ Introdução
 \end_layout
 
 \begin_layout Standard
-Neste relatório estará documentado o processo de criação de um controlador
+Neste relatório está documentado o processo de criação de um controlador
  de semáforos.
  Para isso, utilizamos o LabView como ferramenta principal, também utilizando
  um pouco de Python na automatização.
 \end_layout
 
 \begin_layout Standard
-Em primeiro lugar, começamos a discutir que situação iríamos estudar.
- Começamos por pensar na interceção da Rua Júlio Dínis com a praça de Mouzinho
- de Albuquerque pois apresenta uma interação interessante entre o semáforo
- dos peões e os semáforos de entrada e saída da rotunda.
- No entanto, decidimos estudar um cruzamento pois abria possibilidades para
- novas interações.
- O cruzamento em questão é o cruzamento entre a Rua Latino Coelho e a Rua
- Alegria.
- 
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Inserir figura com o esquema que estudamos (pode ser imagem satélite, esquema
- feito à mão, ou o próprio print do LabView).
- Qual achas que fica melhor?
-\end_layout
-
-\end_inset
-
-
+Foi feita a escolha de um local real da cidade do Porto, a respetiva simulação,
+ e o desenvolvimento de um algoritmo que, dadas certas informações sobre
+ o estado do tráfego em tempo real, decide a configuração de cada um dos
+ semáforos que a ela melhor se adequa.
+ A aplicação real destes controladores teria como consequência uma melhor
+ gestão global do tráfego, nomeadamente a diminuição da duração dos congestionam
+entos diários que ocorrem a certas horas em várias zonas de grandes cidades
+ como o Porto.
 \end_layout
 
 \begin_layout Section
@@ -147,16 +134,77 @@ Especificações iniciais
 \end_layout
 
 \begin_layout Standard
-(...)
-\begin_inset Note Note
+Em primeiro lugar, começamos por discutir que situação iríamos estudar,
+ com foco em situações reais do área metropolitana do Porto.
+ Começamos por pensar na interceção da Rua Júlio Dínis com a Praça de Mouzinho
+ de Albuquerque pois apresenta uma interação interessante entre o semáforo
+ dos peões e os semáforos de entrada e saída da rotunda.
+ No entanto, decidimos optar por um cruzamento pois abria possibilidades
+ para novas interações.
+ O cruzamento em questão é o cruzamento entre a Rua Latino Coelho e a Rua
+ Alegria (Figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:earth"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+Escolhemos o LabView para a implementação do controlador, já que nos dá
+ a capacidade de intervir manualmente durante a execução do código, podendo
+ assim simular facilmente bastantes estados do tráfego logo na fase inicial
+ do desenvolvimento, muito antes de precisarmos realmente de automatizar
+ esse processo.
+ Desta maneira, será prática a avaliação contínua da performance do controlador.
+\end_layout
+
+\begin_layout Standard
+Por outro lado, o pacote de interação com um interpretador de Python que
+ o LabView tem é um bom apoio na eventualidade de precisarmos de implementar
+ algo mais complexo como as funções que farão parte da automatização da
+ simulação do controlador.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
 status open
 
 \begin_layout Plain Layout
-A incluir: Revisão de tecnologias possível; Seleção de hardware/software;
+\align center
+\begin_inset Graphics
+	filename earth.png
+	lyxscale 10
+	width 15cm
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Plain Layout
-Não sei mt bem oq devo escrever aqui xD
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:earth"
+
+\end_inset
+
+Cruzamento entre a Rua da Alegria e a Rua Latino Coelho, Porto.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -183,7 +231,7 @@ _0.1) e fomos inserindo novas características e funcionalidades.
 \end_inset
 
 _0.1: Sistema com semáforo principal e semáforo para peões perfeitamente
- sincroonizados.
+ sincronizados.
  Apresenta um botão de emergência que, caso esteja ativo, o semáforo para
  peões é desativado e o semáforo principal fica em amarelo intermitente.
 \end_layout
@@ -204,19 +252,6 @@ _0.1, porém, de forma mais compacta, assim, quando fossemos estudar sistemas
 \end_inset
 
 _0.2.
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-achas que fica bem eu na descrição do 0.3 referir logo que não continuamos
- com a ideia do 0.2 sem referir pq? Eu estava a pensar explicar melhor o
- pq da 0.2 ter falhado mas assim iamos ficar sem nada para dizer na parte
- 4 - Desenvolvimento.
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Itemize
@@ -261,24 +296,33 @@ amarelo do que no vermelho
 \begin_inset Formula $\alpha$
 \end_inset
 
-_0.4: Apenas uma remodelação do 
+_0.4: Automatização da simulação através de um script de python com funções
+ que descrevem os rácios de entrada ao longo do tempo e outras que com base
+ nos valores destes rácios geram amostras estocásticas da velocidade instânea
+ dos carros.
+\end_layout
+
+\begin_layout Itemize
 \begin_inset Formula $\alpha$
 \end_inset
 
-_0.3.
- Agora apresenta uma representação visual do cruzamento que estamos a estudar
- de forma a tornar mais direta a sua leitura.
+_0.5: Otimização da execução do código Python através da utilização de apenas
+ um script que toma como argumento um array todos os valores necessários
+ e retorna os pretendidos também num array, em oposição a ter um script
+ por valor pretendido.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\alpha$
+\end_inset
+
+_0.6: 
 \begin_inset Note Note
 status open
 
 \begin_layout Plain Layout
-Hugens, acho que era porreiro fazeres tu o resumo do 0.5 e 0.6 sendo que é
- tudo teu e sabes muito melhor oq dizer doq eu :)
-\end_layout
-
-\begin_layout Plain Layout
-PS: Se quiseres alterar alguma coisa à descrição da 0.2 também és bem-vindo,
- como não fui eu q fiz tentei ser breve
+Toques finais?? Não consigo perceber pelo vi que diferenças há entre o 5,
+ 6, e 7 xD
 \end_layout
 
 \end_inset
@@ -291,8 +335,8 @@ Desenvolvimento
 \end_layout
 
 \begin_layout Standard
-Nesta parte do relatório iremos explicar em detalhe as fases já apresentadas
- do nosso projeto.
+Nesta parte do relatório iremos explicar em detalhe as fases do nosso projeto
+ sumariadas anteriormente.
 \end_layout
 
 \begin_layout Subsection*
@@ -702,6 +746,90 @@ Fica à vontade para alterar qualqueeer coisa que te apeteça, confio totalmente
 
 \begin_layout Plain Layout
 Em relação aos alphas em falta acho que sinceramente deixo contigo.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+\begin_inset Formula $\boldsymbol{\alpha}$
+\end_inset
+
+-0.5
+\end_layout
+
+\begin_layout Standard
+Segue-se uma breve descrição destas:
+\end_layout
+
+\begin_layout Standard
+• “genspeed”: função que gera velocidades instantâneas.
+ Recorremos ao módulo random do pacote NumPy, ao método da inversão da função
+ cumulativa da distribuição de probabilidade, e ao facto de que a distribuição
+ que escolhemos tem uma primitiva facilmente determinável.
+\end_layout
+
+\begin_layout Standard
+• “cauchy”: retorna o valor da distribuição de probabilidade para um dado
+ valor da variável aleatória, do valor médio e do desvio padrão.
+\end_layout
+
+\begin_layout Standard
+• “gettime”: usa o tempo real e converte-o num tempo virtual, sendo que
+ estes diferem apenas de um fator multiplicativo.
+ • “ratio”: função que retorna os rácios de entrada dada a altura do dia.
+\end_layout
+
+\begin_layout Subsection*
+\begin_inset Formula $\boldsymbol{\alpha}$
+\end_inset
+
+-0.6
+\end_layout
+
+\begin_layout Standard
+• “get”: recebe o array com os parâmetros controlados no Front Panel, nomeadamen
+te o fator de conversão entre os tempos e os valores instantâneos dos rácios
+ de entrada, chama as restantes funções e organiza todos os valores num
+ array de output que será recebido pela VI.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename node.png
+	lyxscale 10
+	width 10cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:node"
+
+\end_inset
+
+Script de Python.
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
