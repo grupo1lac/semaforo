@@ -33,4 +33,5 @@ def get(array):
     return [ratio(array[0]),    \
             genspeed(array[1]), \
             genspeed(array[2]), \
-            genspeed(array[3])]
+            genspeed(array[3]), \
+            gettime(array[0])%12]
