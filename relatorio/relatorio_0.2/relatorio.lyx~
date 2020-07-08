@@ -403,91 +403,19 @@ _0.1
 \end_layout
 
 \begin_layout Standard
-Refiro aqui a imagem 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:jantar"
-plural "false"
-caps "false"
-noprefix "false"
-
-\end_inset
-
- 
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Insert -> Cross-Reference
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Insert -> Float -> Figure
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-\align center
-\begin_inset Float figure
-wide false
-sideways false
-status open
-
-\begin_layout Plain Layout
-\align center
-\begin_inset Graphics
-	filename saudades.jpg
-	lyxscale 10
-	width 5cm
-
-\end_inset
-
-
-\begin_inset Caption Standard
-
-\begin_layout Plain Layout
-Breve descrição.
- 
-\begin_inset CommandInset label
-LatexCommand label
-name "fig:jantar"
-
-\end_inset
-
-
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Insert -> Label
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
+Após termos um propótipo inicial com as funcionalidades básicas (funcionamento
+ normal e situação de emergência), decidimos tentar encontrar uma estrutura
+ de código que nos permitisse construir um subVI com um semáforo e simplesmente
+ clonar essa subVI várias vezes, construindo assim estruturas mais complexas.
+ Um bom candidato para essa estrutura seria o ''Event Structure'' do LabView,
+ que faz uma ''sandbox'' a uma certa porção de código e só o executa na
+ ocorrência de um evento, como por exemplo a alteração do valor de uma variável
+ local.
+ Deste modo, a ideia era conter todo o código respetivo a um controlador
+ dentro de uma destas estruturas e contê-la dentro da tal subVI.
+ Depois de fazer esta implementação, ao tentar construir a subVI apercebemo-nos
+ que o LabView não suporta conter um ''Event Structure'' dentro da mesma,
+ pelo que tivemos que desistir desta ideia.
 \end_layout
 
 \begin_layout Subsection*
@@ -706,7 +634,7 @@ Front Panel do
 \begin_inset Formula $\alpha$
 \end_inset
 
-_0.4 com o esquema do cruzamento entre a rua Latino Coelho e a rua da Alegria;
+_0.4 com o esquema do cruzamento entre a Rua Latino Coelho e a Rua da Alegria;
  o botão retangular está ativo quando a velocidade na via é 
 \begin_inset Formula $\geq50km/h$
 \end_inset
@@ -892,11 +820,44 @@ Avaliação de desempenho
 \end_layout
 
 \begin_layout Standard
-(...)
+Resumidamente, o comportamento geral do controlador em siconsiste nas seguintes
+ funcionalidades:
+\end_layout
+
+\begin_layout Itemize
+Controlo do intervalo em que os semáforos permanecem com luz verde/vermelha
+ com base no quantidade de veículos da via.
+\end_layout
+
+\begin_layout Itemize
+A existência de um caso de emergência, no qual todos os semáforos entram
+ numa intermitência da luz amarela.
+\end_layout
+
+\begin_layout Itemize
+A passagem atempada para vermelho do semáforo da via onde um carro estava
+ a ultrapassar um certo limite de velocidade, obrigando-o a imobilizar-se.
+\end_layout
+
+\begin_layout Standard
+Na sua última versão do código, o algoritmo desempenha toda estas funções.
+ A única parte da execução que pode não apresentar uma performance consistente
+ é a parte da automatização.
+ Como a utilização explícita do “Runtime” do LabView não é a mais simples,
+ decidimos utilizar o tempo real do sistema onde o código está a correr
+ e trabalhar com um tempo “virtual”, sendo que estes diferem por uma constante
+ mulptiplicativa.
+ Deste modo, há sempre o limite em que o ritmo relativo de passagem do tempo
+ virtual é demasiado elevado, maior que o tempo de processamento normal
+ do LabView, e podem surgir complicações.
+ Deste modo decidimos não sintonizar os tempos durante os quais os semáforos
+ estão nas respetivas configurações, já que tornava um pouco difícil a visualiza
+ção das várias funcionalidades e podia resultar em mais complicações como
+ as mencionadas.
 \end_layout
 
 \begin_layout Section
-Implementação real - refleções
+Implementação real - refleçõ
 \end_layout
 
 \begin_layout Standard
@@ -910,23 +871,9 @@ Se pensarmos no controlador em si como software, a sua implementação na
  como seria o caso do nosso controlador.
  Assim, era apenas uma questão de converter o nosso algoritmo para uma linguagem
  mais apropriada como Python, C ou C++.
- A
-\end_layout
-
-\begin_layout Standard
-(...)
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-A incluir: Como implementar em semáforos reais (ideia: usar um arduino ou
- raspberry pi em cada semáforo, etc...); Estimativa de custo de implementação
- em sistemas de semáforos reais.
-\end_layout
-
-\end_inset
-
-
+ Contudo, já que o nosso algoritmo envolve a recolha de informações como
+ o número de carros na via e a sua velocidade instantânea, teríamos de adicionar
+ um aparelho que recolhesse estes dados.
 \end_layout
 
 \begin_layout Section
@@ -942,16 +889,16 @@ Recursos
 \end_layout
 
 \begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Metemos tudo no github e metemos aqui o link op :)
-\end_layout
+\begin_inset CommandInset href
+LatexCommand href
+name "https://github.com/grupo1lac/semaforo/"
+target "https://github.com/grupo1lac/semaforo/"
+literal "true"
 
 \end_inset
 
-
+ - Repositório de GitHub do projeto, contendo todo o código associado à
+ evolução do projeto.
 \end_layout
 
 \end_body
