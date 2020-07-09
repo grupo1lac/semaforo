@@ -7,4 +7,5 @@
     <img width="900" alt="pngpdf" src="extra/relatorio-6.png">
     <img width="900" alt="pngpdf" src="extra/relatorio-7.png">
     <img width="900" alt="pngpdf" src="extra/relatorio-8.png">
+    <img width="900" alt="pngpdf" src="extra/relatorio-9.png">
 </p>
