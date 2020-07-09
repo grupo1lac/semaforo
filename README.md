@@ -4,4 +4,7 @@
     <img width="900" alt="Henon Landscape" src="extra/relatorio-3.png">
     <img width="900" alt="Henon Landscape" src="extra/relatorio-4.png">
     <img width="900" alt="Henon Landscape" src="extra/relatorio-5.png">
+    <img width="900" alt="Henon Landscape" src="extra/relatorio-6.png">
+    <img width="900" alt="Henon Landscape" src="extra/relatorio-7.png">
+    <img width="900" alt="Henon Landscape" src="extra/relatorio-8.png">
 </p>
