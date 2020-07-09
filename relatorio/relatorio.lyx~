@@ -296,7 +296,19 @@ amarelo do que no vermelho
 \begin_inset Formula $\alpha$
 \end_inset
 
-_0.4: Automatização da simulação através de um script de python com funções
+_0.4: Mudança de um cruzamento entre vias de sentido único para o cruzamento
+ desejado, que tem uma via de dois sentidos e outra de sentido único.
+ Os semáforos da via de dois sentidos são naturalmente clones um do outro,
+ ou seja, a sua configuração instantênea é sempre semelhante.
+ Adicionamos também todo o aspeto visual da própria via no Front Panel do
+ LabView.
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\alpha$
+\end_inset
+
+_0.5: Automatização da simulação através de um script de python com funções
  que descrevem os rácios de entrada ao longo do tempo e outras que com base
  nos valores destes rácios geram amostras estocásticas da velocidade instânea
  dos carros.
@@ -306,28 +318,10 @@ _0.4: Automatização da simulação através de um script de python com funçõ
 \begin_inset Formula $\alpha$
 \end_inset
 
-_0.5: Otimização da execução do código Python através da utilização de apenas
+_0.6: Otimização da execução do código Python através da utilização de apenas
  um script que toma como argumento um array todos os valores necessários
  e retorna os pretendidos também num array, em oposição a ter um script
  por valor pretendido.
-\end_layout
-
-\begin_layout Itemize
-\begin_inset Formula $\alpha$
-\end_inset
-
-_0.6: 
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Toques finais?? Não consigo perceber pelo vi que diferenças há entre o 5,
- 6, e 7 xD
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Section
@@ -697,11 +691,64 @@ armos um simulação automática.
  longo dia: às 8h e às 17h.
  Como esse fenómeno ocorre com muita consistência, decidimos que uma evolução
  determinista que consiste numa combinação linear de duas distribuições
- de Cauchy com os seus máximos nos anteriormente referidos.
- Como a velocidade instantânea dos veículos é claramente um fenómeno mais
+ de Cauchy (Figura 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:cauchy"
+plural "false"
+caps "false"
+noprefix "false"
+
+\end_inset
+
+) com os seus máximos nos anteriormente referidos.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Graphics
+	filename cauchy.gif
+	width 12cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption Standard
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:cauchy"
+
+\end_inset
+
+Distribuição de Cauchy e a respetiva função cumulativa.
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Como a velocidade instantânea dos veículos é claramente um fenómeno mais
  aleatório, decidimos gerar a cada instante um valor aleatório da mesma,
  seguindo também uma distribuição de Cauchy.
- Contudo, não faria muito sentido que o valor médio da distribuição fosse
+ +++Contudo, não faria muito sentido que o valor médio da distribuição fosse
  uma constante, já que é pouco provável que este seja o mesmo em situações
  de alto ou baixo tráfego.
  Deste modo, fizemos com que o valor médio fosse uma função do rácio de
@@ -743,7 +790,7 @@ Segue-se uma breve descrição das funções:
 \end_layout
 
 \begin_layout Standard
-Percebmos que chamar uma instância do interpretador de python para cada
+Percebemos que chamar uma instância do interpretador de python para cada
  um dos valores que queríamos calcular causava problemas de ecidimos juntar
  todas as funções num só script e fazer mais uma função, que recebe como
  argumento todos variáveis consideradas num certo instante, chama as restantes
@@ -783,7 +830,7 @@ status open
 \begin_layout Plain Layout
 \align center
 \begin_inset Graphics
-	filename node.png
+	filename python.png
 	lyxscale 10
 	width 10cm
 
@@ -857,7 +904,7 @@ Na sua última versão do código, o algoritmo desempenha toda estas funções.
 \end_layout
 
 \begin_layout Section
-Implementação real - refleçõ
+Implementação real - refleções
 \end_layout
 
 \begin_layout Standard
@@ -881,7 +928,18 @@ Conclusão
 \end_layout
 
 \begin_layout Standard
-(...)
+Na nossa opinião, a realização deste trabalho suporta a ideia de que é possível
+ melhorar o trânsito em grandes cidades, através da implementação de controlador
+es com comportamento adaptativo consoante as características do próprio
+ trânsito, ainda que a melhoria não seja muito drástica.
+ No entanto, temos de ter em conta que apenas testamos este controlador
+ neste caso em específico, e é provável que a sua aplicação em configurações
+ mais complexas de vias seja bastante mais complicado, não justificando
+ a sua aplicação.
+ Também é possível que a simulação com que testamos o controlador não se
+ aproxime tanto da realidade nessas outras configurações de via, sendo que
+ mesmo que as testássemos teríamos que descobrir como as testar devidamente,
+ talvez recolhendo e analisando dados reais.
 \end_layout
 
 \begin_layout Subsection*
